@@ -38,9 +38,9 @@
 
 ### 前置要求
 - Python 3.12+
-- uv (推荐) 或 pip
+- uv (推荐，现代 Python 包管理器)
 
-### 安装步骤
+### 方法一：从 GitHub 克隆（推荐）
 
 ```bash
 # 克隆项目
@@ -50,12 +50,55 @@ cd context-scraper-mcp-server
 # 使用 uv 安装依赖
 uv sync
 
-# 或使用 pip
+# 运行 Crawl4AI 后安装设置
+crawl4ai-setup
+
+# 激活虚拟环境
+source .venv/bin/activate
+```
+
+### 方法二：从零开始创建
+
+如果你想从头开始创建项目：
+
+```bash
+# 初始化项目
+uv init context-scraper-mcp-server
+cd context-scraper-mcp-server
+
+# 安装依赖
+uv add "mcp[cli]" crawl4ai
+
+# 激活虚拟环境
+source .venv/bin/activate
+
+# 运行 Crawl4AI 后安装设置
+crawl4ai-setup
+```
+
+### 方法三：使用传统 pip
+
+```bash
+# 克隆项目
+git clone https://github.com/ddipass/context-scraper-mcp-server.git
+cd context-scraper-mcp-server
+
+# 安装依赖
 pip install -e .
 
 # 安装浏览器依赖
 python -m playwright install chromium
+
+# 运行 Crawl4AI 设置
+crawl4ai-setup
 ```
+
+### 关于 uv
+
+我们推荐使用 [uv](https://github.com/astral-sh/uv) - 这是一个用 Rust 构建的现代 Python 包管理器，它：
+- 比传统的 pip 快得多
+- 是 Python MCP SDK 推荐的标准工具
+- 提供更好的依赖管理和虚拟环境处理
 
 ## 🛠️ 使用方法
 
@@ -73,6 +116,24 @@ python -m mcp run server.py
 
 将以下配置添加到你的 MCP 客户端配置中：
 
+#### 方法一：创建 MCP 配置文件
+
+在 `.amazonq` 目录中创建 `mcp.json` 文件：
+
+```json
+{
+    "mcpServers": {
+        "ContextScraper": {
+            "command": "uv",
+            "args": ["run", "--with", "mcp", "mcp", "run", "server.py"],
+            "cwd": "/path/to/context-scraper-mcp-server"
+        }
+    }
+}
+```
+
+#### 方法二：直接配置（如果使用其他 MCP 客户端）
+
 ```json
 {
   "mcpServers": {
@@ -83,6 +144,13 @@ python -m mcp run server.py
     }
   }
 }
+```
+
+### 验证安装
+
+启动服务器后，你应该能看到类似以下的输出：
+```
+MCP Server running on stdio
 ```
 
 ## 🎮 服务器管理
