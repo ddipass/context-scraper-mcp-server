@@ -50,11 +50,11 @@ cd context-scraper-mcp-server
 # 使用 uv 安装依赖
 uv sync
 
-# 运行 Crawl4AI 后安装设置
-crawl4ai-setup
-
 # 激活虚拟环境
 source .venv/bin/activate
+
+# 运行 Crawl4AI 后安装设置
+crawl4ai-setup
 ```
 
 ### 方法二：从零开始创建
