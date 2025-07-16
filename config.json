@@ -1,0 +1,7 @@
+{
+  "llm": {
+    "api_key": "cbN4Vd270Ku3pq2dVh+8rICNqa2RsPvxyiW1bEDrG1o=",
+    "base_url": "http://Bedroc-Proxy-dZmq8lX6J5TY-92025060.us-west-2.elb.amazonaws.com/api/v1",
+    "model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0"
+  }
+}

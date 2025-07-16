@@ -5,6 +5,7 @@ description = "A powerful MCP server for web crawling and content extraction usi
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiohttp>=3.12.13",
     "crawl4ai>=0.6.3",
     "mcp[cli]>=1.10.1",
 ]
