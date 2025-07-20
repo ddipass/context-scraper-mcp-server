@@ -1,0 +1,47 @@
+{
+  "google": {
+    "name": "Google",
+    "enabled": true,
+    "api_key": null,
+    "base_url": "https://www.google.com/search",
+    "timeout": 30,
+    "max_results": 10,
+    "priority": 1
+  },
+  "baidu": {
+    "name": "百度",
+    "enabled": true,
+    "api_key": null,
+    "base_url": "https://www.baidu.com/s",
+    "timeout": 30,
+    "max_results": 10,
+    "priority": 2
+  },
+  "bing": {
+    "name": "Bing",
+    "enabled": true,
+    "api_key": null,
+    "base_url": "https://www.bing.com/search",
+    "timeout": 30,
+    "max_results": 10,
+    "priority": 3
+  },
+  "yahoo": {
+    "name": "Yahoo",
+    "enabled": true,
+    "api_key": null,
+    "base_url": "https://search.yahoo.com/search",
+    "timeout": 30,
+    "max_results": 10,
+    "priority": 4
+  },
+  "duckduckgo": {
+    "name": "DuckDuckGo",
+    "enabled": true,
+    "api_key": null,
+    "base_url": "https://duckduckgo.com/",
+    "timeout": 30,
+    "max_results": 10,
+    "priority": 5
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "claude_api": {
+    "api_key": "your-claude-api-key-here",
+    "base_url": "http://Bedroc-Proxy-dZmq8lX6J5TY-92025060.us-west-2.elb.amazonaws.com/api/v1",
+    "model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
+    "enabled": true,
+    "timeout": 30,
+    "max_tokens": 4000,
+    "temperature": 0.7
+  },
+  "usage_notes": {
+    "description": "Claude API配置用于高级内容分析和智能研究功能",
+    "setup_instructions": [
+      "1. 将你的Claude API Key填入上面的api_key字段",
+      "2. 设置enabled为true启用Claude功能", 
+      "3. 根据需要调整model、timeout等参数",
+      "4. 重启服务器使配置生效"
+    ],
+    "security_note": "请妥善保管API Key，不要提交到版本控制系统",
+    "bedrock_note": "如果使用AWS Bedrock，可能需要使用AWS凭证而不是API Key"
+  }
+}

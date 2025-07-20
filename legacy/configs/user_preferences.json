@@ -1,0 +1,12 @@
+{
+  "default_search_engine": "google",
+  "respect_explicit_engine": true,
+  "auto_fallback": true,
+  "search_timeout": 30,
+  "max_concurrent_searches": 3,
+  "chinese_content_engine": "baidu",
+  "academic_content_engine": "google",
+  "privacy_focused_engine": "duckduckgo",
+  "enable_smart_engine_selection": true,
+  "learn_from_user_choices": true
+}
