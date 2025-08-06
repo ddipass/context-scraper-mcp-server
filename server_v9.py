@@ -365,6 +365,7 @@ def smart_search_guide(search_query: str = "What do you want to search?") -> str
         'research', 'paper', 'study', 'journal', 'publication', 'thesis', 'dissertation', 'conference',
         'academic', 'scholar', 'university', 'college', 'professor', 'phd', 'master', 'bachelor',
         'citation', 'bibliography', 'peer review', 'methodology', 'analysis', 'experiment', 'survey',
+        'arxiv', 'pubmed', 'ieee', 'acm', 'springer', 'elsevier', 'nature', 'science',
         '研究', '论文', '学术', '期刊', '会议', '大学', '学者', '博士', '硕士', '实验', '调研'
     ]
     
@@ -388,25 +389,25 @@ def smart_search_guide(search_query: str = "What do you want to search?") -> str
     is_sensitive = any(keyword in query_lower for keyword in privacy_keywords)
     
     # Smart recommendation with priority logic
-    if is_sensitive:
+    if is_academic:
+        # Academic content gets specialized academic search
+        primary_recommendation = "Academic Search"
+        primary_command = f'academic_search("{search_query}", "google_scholar", 5)'
+        primary_reason = "Academic content detected, specialized academic search recommended for high-quality research results"
+    elif is_sensitive:
         # Privacy is highest priority
         primary_recommendation = "DuckDuckGo Search"
-        primary_url = duckduckgo_url
+        primary_command = f'crawl_with_intelligence("{duckduckgo_url}", True, False)'
         primary_reason = "Privacy-sensitive content detected, DuckDuckGo doesn't track users"
     elif is_technical:
-        # Technical content gets Google
-        primary_recommendation = "Google Search"
-        primary_url = google_url
-        primary_reason = "Technical content detected, Google has the richest technical resources"
-    elif is_academic:
-        # Academic content gets Google
-        primary_recommendation = "Google Search"
-        primary_url = google_url
-        primary_reason = "Academic content detected, Google Scholar and academic resources are more comprehensive"
+        # Technical content gets Google with deep search
+        primary_recommendation = "Google Deep Search"
+        primary_command = f'crawl_with_intelligence("{google_url}", True, True, 5)'
+        primary_reason = "Technical content detected, Google has the richest technical resources, deep search for comprehensive results"
     else:
         # Default to Google for general English content
         primary_recommendation = "Google Search"
-        primary_url = google_url
+        primary_command = f'crawl_with_intelligence("{google_url}", True, False)'
         primary_reason = "General search, Google has the widest coverage and best algorithms"
     
     # Build feature analysis display
@@ -434,11 +435,12 @@ def smart_search_guide(search_query: str = "What do you want to search?") -> str
     global config
     content_limit = config.content_limits.markdown_display_limit
     
-    return f"""# 🔍 AI Smart Search Assistant (V9 配置增强版)
+    return f"""# 🔍 AI Smart Search Assistant (V9 学术增强版)
 
 ## 📊 Search Analysis
 **Query**: {search_query}
 **Content Features**: {features_display}
+**Search Type**: {'🎓 Academic' if is_academic else '🌐 General'}
 **Confidence**: {'High' if len([f for f in [is_technical, is_academic, is_news, is_sensitive] if f]) > 0 else 'Medium'}
 **Current Content Limit**: {content_limit} 字符
 
@@ -449,87 +451,157 @@ def smart_search_guide(search_query: str = "What do you want to search?") -> str
 
 **🚀 Execute Now**:
 ```
-crawl_with_intelligence(
-    url="{primary_url}",
-    use_smart_analysis=True
-)
+{primary_command}
 ```
 
-## Other Options
+## 🔧 Search Options Matrix
 
-### Basic Search Options
-| Engine | Use Case | Command |
-|--------|----------|---------|
-| Google | Technical, academic, international | `crawl_with_intelligence("{google_url}", True)` |
-| Baidu | Chinese content, local info | `crawl_with_intelligence("{baidu_url}", True)` |
-| Bing | Microsoft ecosystem, business | `crawl_with_intelligence("{bing_url}", True)` |
-| DuckDuckGo | Privacy protection, anonymous | `crawl_with_intelligence("{duckduckgo_url}", True)` |
+### 🎓 Academic & Research
+| Use Case | Tool | Command Example |
+|----------|------|-----------------|
+| 学术论文搜索 | Academic Search | `academic_search("machine learning", "google_scholar", 5)` |
+| arXiv论文 | Academic Search | `academic_search("deep learning", "arxiv", 3)` |
+| 医学文献 | Academic Search | `academic_search("COVID-19", "pubmed", 5)` |
 
-### Anti-Detection Options (Use when blocked)
+### 🌐 General Web Search  
+| Use Case | Tool | Command Example |
+|----------|------|-----------------|
+| 深度搜索 | Intelligence + Deep | `crawl_with_intelligence("{google_url}", True, True, 5)` |
+| 快速搜索 | Intelligence | `crawl_with_intelligence("{google_url}", True, False)` |
+| 隐私搜索 | Intelligence | `crawl_with_intelligence("{duckduckgo_url}", True, False)` |
+| 技术搜索 | Intelligence | `crawl_with_intelligence("{google_url}", True, False)` |
+| 中文地域搜索 | Intelligence | `crawl_with_intelligence("{baidu_url}", True, False)` |
+
+### 🛡️ Anti-Detection Options
 | Tool | Use Case | Command |
 |------|----------|---------|
-| Stealth Mode | Basic anti-bot detection | `crawl_stealth("{primary_url}")` |
-| Geo Spoofing | Regional content restrictions | `crawl_with_geolocation("{primary_url}", "random")` |
-| Retry Mode | Unstable websites | `crawl_with_retry("{primary_url}")` |
+| Stealth Mode | Basic anti-bot | `crawl_stealth("{google_url}")` |
+| Geo Spoofing | Regional restrictions | `crawl_with_geolocation("{google_url}", "random")` |
+| Retry Mode | Unstable sites | `crawl_with_retry("{google_url}")` |
 
-## 🔧 Configuration Options
-
-### Quick Config Commands
-- 调整内容限制: `quick_config_content_limit(5000)`
-- 调整词数阈值: `quick_config_word_threshold(100)`
-- 查看所有配置: `configure_crawl_settings("show", "all")`
-
-## Decision Flow
+## 🤔 Decision Tree
 
 ```
-Start Search
+搜索需求分析
     ↓
-Use AI Recommendation
-    ↓
-Success? → Yes → Done ✅
-    ↓
-    No
-    ↓
-Try Stealth Mode
-    ↓
-Success? → Yes → Done ✅
-    ↓
-    No
-    ↓
-Try Geo Spoofing
-    ↓
-Success? → Yes → Done ✅
-    ↓
-    No
-    ↓
-Use Retry Mode → Done ✅
+学术研究? → Yes → academic_search() ✅
+    ↓ No
+需要深度内容? → Yes → crawl_with_intelligence(deep_search=True) ✅
+    ↓ No  
+隐私敏感? → Yes → DuckDuckGo + crawl_with_intelligence() ✅
+    ↓ No
+技术内容? → Yes → Google + crawl_with_intelligence(deep_search=True) ✅
+    ↓ No
+一般搜索 → Google + crawl_with_intelligence() ✅
 ```
 
-## 💡 Quick Start
+## 💡 使用建议
 
-1. **🎯 Direct Use**: Copy the AI recommended command above
-2. **🔄 If Problems**: Follow decision flow step by step  
-3. **📊 Compare Results**: Use different engines for comparison
-4. **🛡️ If Blocked**: Try anti-detection options
-5. **⚙️ Customize**: Use config commands to adjust settings
+### 🎓 学术搜索场景
+- **论文查找**: 使用 `academic_search()` 获取高质量学术内容
+- **文献综述**: 设置较大的 `max_results` 参数 (5-10)
+- **特定领域**: 选择合适的 `source` (google_scholar/arxiv/pubmed)
 
-## 📋 Pro Tips
+### 🌐 一般搜索场景  
+- **信息丰富度优先**: 使用 `deep_search=True` 获取完整内容
+- **速度优先**: 使用 `deep_search=False` 快速获取摘要
+- **隐私保护**: 选择DuckDuckGo搜索引擎
 
-- **First try**: Always start with AI recommendation
-- **General searches**: Google usually works best
-- **Privacy matters**: Use DuckDuckGo for sensitive topics
-- **Getting blocked**: Try stealth mode or geo spoofing
-- **Unstable sites**: Use retry mode with multiple attempts
-- **Content too long**: Use `quick_config_content_limit()` to adjust
+### ⚙️ 配置优化
+- 内容长度: `quick_config_content_limit(5000)`
+- 词数阈值: `quick_config_word_threshold(100)`
+- 查看配置: `configure_crawl_settings("show", "all")`
+
+## 🎯 Quick Start Examples
+
+```python
+# 🎓 学术搜索
+academic_search("transformer architecture", "arxiv", 3)
+
+# 🌐 深度网页搜索  
+crawl_with_intelligence("https://google.com/search?q=AI+news", True, True, 5)
+
+# 🔍 快速信息获取
+crawl_with_intelligence("https://google.com/search?q=weather", True, False)
+```
 
 ## ⚠️ Important Notes
 
-- Use reasonable delays between requests
-- Some websites may still block automated access
-- Current settings can be viewed with `configure_crawl_settings("show")`
+- 深度搜索会爬取搜索结果中的实际网页内容，耗时较长但信息更丰富
+- 学术搜索专门优化了对学术网站的解析
+- 使用合理的延迟避免被网站屏蔽
+- 当前设置可通过 `configure_crawl_settings("show")` 查看
 
 **🚀 Ready to search? Start with the AI recommended solution above!**
 """
+# ===== 深度搜索辅助函数 =====
+
+def _is_search_page(url: str) -> bool:
+    """判断是否为搜索页面"""
+    search_indicators = [
+        'google.com/search',
+        'baidu.com/s',
+        'bing.com/search', 
+        'duckduckgo.com',
+        'scholar.google.com',
+        'arxiv.org/search',
+        'pubmed.ncbi.nlm.nih.gov'
+    ]
+    return any(indicator in url.lower() for indicator in search_indicators)
+
+def _extract_search_result_links(markdown_content: str, max_results: int) -> List[str]:
+    """从搜索结果页面提取链接"""
+    import re
+    
+    # 提取markdown中的链接
+    link_pattern = r'\[([^\]]+)\]\(([^)]+)\)'
+    matches = re.findall(link_pattern, markdown_content)
+    
+    # 过滤掉搜索引擎自身的链接和无效链接
+    filtered_links = []
+    exclude_patterns = [
+        'google.com', 'baidu.com', 'bing.com', 'duckduckgo.com',
+        'javascript:', 'mailto:', '#', 'webcache', 'translate.google'
+    ]
+    
+    for title, link in matches:
+        # 跳过排除的链接模式
+        if any(pattern in link.lower() for pattern in exclude_patterns):
+            continue
+            
+        # 确保是有效的HTTP链接
+        if link.startswith(('http://', 'https://')):
+            filtered_links.append(link)
+            
+        if len(filtered_links) >= max_results:
+            break
+    
+    return filtered_links
+
+async def _crawl_search_results(crawler, links: List[str], crawl_config) -> str:
+    """爬取搜索结果链接的内容"""
+    results = []
+    
+    for i, link in enumerate(links, 1):
+        try:
+            print(f"🔍 正在爬取第{i}个搜索结果: {link}")
+            
+            result = await crawler.arun(url=link, config=crawl_config)
+            
+            if result.success and result.markdown:
+                # 限制每个结果的长度，避免内容过长
+                content = result.markdown[:2000] if len(result.markdown) > 2000 else result.markdown
+                title = result.metadata.get('title', f'搜索结果 {i}')
+                
+                results.append(f"## 📄 {title}\n**URL**: {link}\n\n{content}\n")
+            else:
+                results.append(f"## ❌ 搜索结果 {i}\n**URL**: {link}\n**错误**: 无法获取内容\n")
+                
+        except Exception as e:
+            results.append(f"## ❌ 搜索结果 {i}\n**URL**: {link}\n**错误**: {str(e)}\n")
+    
+    return "\n".join(results) if results else "未能获取到有效的搜索结果内容"
+
 # ===== 配置化爬取工具 =====
 
 @mcp.tool()
@@ -726,7 +798,9 @@ async def crawl_with_retry(url: str, max_retries: Optional[int] = None) -> str:
 @mcp.tool()
 async def crawl_with_intelligence(
     url: str,
-    use_smart_analysis: bool = True
+    use_smart_analysis: bool = True,
+    deep_search: bool = False,
+    max_results: int = 3
 ) -> str:
     """
     Smart web crawling with content optimization and analysis (配置化版本).
@@ -734,6 +808,8 @@ async def crawl_with_intelligence(
     Args:
         url: Target webpage URL
         use_smart_analysis: Enable intelligent content analysis and optimization
+        deep_search: Extract content from search result links (for search pages)
+        max_results: Number of search results to crawl when deep_search=True
         
     Returns:
         Optimized webpage content in Markdown format
@@ -742,6 +818,7 @@ async def crawl_with_intelligence(
         - Dynamic content websites
         - Complex page structures
         - Content-heavy websites requiring optimization
+        - Deep search: crawl_with_intelligence("https://google.com/search?q=AI", True, True, 5)
     """
     
     try:
@@ -778,12 +855,115 @@ async def crawl_with_intelligence(
                 if use_smart_analysis and config.advanced_settings.enable_smart_analysis:
                     extra_info["Smart Analysis"] = "Enabled"
                 
+                # 深度搜索功能
+                if deep_search and _is_search_page(url):
+                    extra_info["Deep Search"] = "Enabled"
+                    extra_info["Max Results"] = str(max_results)
+                    
+                    # 解析搜索结果页面，提取链接
+                    search_links = _extract_search_result_links(result.markdown, max_results)
+                    
+                    if search_links:
+                        deep_content = await _crawl_search_results(crawler, search_links, crawl_config)
+                        
+                        # 合并原始搜索页面和深度内容
+                        combined_content = f"{result.markdown}\n\n{'='*50}\n🔍 DEEP SEARCH RESULTS\n{'='*50}\n\n{deep_content}"
+                        
+                        # 创建新的结果对象
+                        class DeepResult:
+                            def __init__(self, original_result, combined_content):
+                                self.success = original_result.success
+                                self.markdown = combined_content
+                                self.metadata = original_result.metadata
+                        
+                        result = DeepResult(result, combined_content)
+                
                 return format_crawl_result(result, url, "V9 Smart Crawling", extra_info)
             else:
                 return f"Crawling failed: {result.error_message}"
                 
     except Exception as e:
         return f"Crawling process error: {str(e)}"
+@mcp.tool()
+async def academic_search(
+    query: str,
+    source: str = "google_scholar",
+    max_results: int = 5,
+    include_abstracts: bool = True
+) -> str:
+    """
+    Academic search with paper content extraction using stealth mode.
+    
+    Args:
+        query: Academic search query
+        source: Academic source (google_scholar/arxiv/pubmed)
+        max_results: Maximum number of papers to retrieve
+        include_abstracts: Whether to include paper abstracts
+        
+    Returns:
+        Academic search results with paper details
+        
+    Use cases:
+        - Research paper discovery: academic_search("machine learning", "google_scholar", 5)
+        - arXiv papers: academic_search("transformer", "arxiv", 3)
+        - Medical literature: academic_search("COVID-19", "pubmed", 5)
+    """
+    
+    try:
+        global config
+        
+        # URL encoding
+        import urllib.parse
+        encoded_query = urllib.parse.quote_plus(query)
+        
+        # 构建学术搜索URL
+        academic_urls = {
+            "google_scholar": f"https://scholar.google.com/scholar?q={encoded_query}",
+            "arxiv": f"https://arxiv.org/search/?query={encoded_query}&searchtype=all",
+            "pubmed": f"https://pubmed.ncbi.nlm.nih.gov/?term={encoded_query}"
+        }
+        
+        if source not in academic_urls:
+            return f"❌ 不支持的学术数据源: {source}\n支持的数据源: {', '.join(academic_urls.keys())}"
+        
+        search_url = academic_urls[source]
+        crawl_method = "Unknown"
+        
+        # 🆕 优先使用隐身模式，失败时回退到普通模式
+        try:
+            # 首先尝试隐身模式 - 专门针对学术网站的反爬虫机制
+            result = await crawl_stealth(search_url)
+            crawl_method = "Stealth Mode (Anti-Detection)"
+        except Exception as stealth_error:
+            print(f"⚠️ 隐身模式失败，回退到普通模式: {stealth_error}")
+            # 回退到普通智能爬取
+            result = await crawl_with_intelligence(
+                url=search_url,
+                use_smart_analysis=True,
+                deep_search=True,
+                max_results=max_results
+            )
+            crawl_method = "Intelligence Mode (Fallback)"
+        
+        # 为学术搜索结果添加特殊标识和格式化
+        academic_header = f"""# 🎓 学术搜索结果
+
+**查询**: {query}
+**数据源**: {source.replace('_', ' ').title()}
+**爬取方式**: {crawl_method}
+**最大结果数**: {max_results}
+**包含摘要**: {'是' if include_abstracts else '否'}
+**搜索URL**: {search_url}
+
+---
+
+"""
+        
+        return academic_header + result
+        
+    except Exception as e:
+        return f"❌ 学术搜索失败: {str(e)}"
+
 # ===== 实验性功能 =====
 
 @mcp.tool()
@@ -895,15 +1075,16 @@ Version: 9.0.0
 Status: Active
 Python: {current_python}
 Virtual Environment: {venv_status}
-Enhancement: Unified Configuration Management + User Configurable Parameters
-Total Tools: 10
+Enhancement: Unified Configuration Management + User Configurable Parameters + Academic Search
+Total Tools: 11
 
 Available Tools:
 • crawl - Basic webpage crawling (配置化)
-• crawl_with_intelligence - Smart crawling with optimization (配置化)
+• crawl_with_intelligence - Smart crawling with optimization (配置化 + 深度搜索)
 • crawl_stealth - Anti-detection crawling (配置化)
 • crawl_with_retry - Retry mechanism for unstable sites (配置化)
 • crawl_with_geolocation - Geographic location spoofing (配置化)
+• academic_search - Academic paper search and extraction (🆕 NEW)
 • experimental_claude_analysis - AI content analysis (配置化)
 • configure_crawl_settings - 配置管理工具
 • quick_config_content_limit - 快速设置内容限制
@@ -918,6 +1099,8 @@ V9 New Features:
 - 🔍 Smart lib directory scanning
 - 📋 Detailed startup diagnostics
 - ⚙️ Real-time configuration updates
+- 🎓 Academic search with deep content extraction (🆕 NEW)
+- 🌐 Deep search for comprehensive web results (🆕 NEW)
 
 Current Configuration:
 - 📄 Content Display Limit: {config.content_limits.markdown_display_limit} chars
@@ -933,7 +1116,20 @@ Configuration Management:
 - ⚡ Quick word threshold: quick_config_word_threshold(100)
 - 🔄 Reset to defaults: configure_crawl_settings("reset")
 
-System: Ready for web crawling operations with unified configuration management"""
+Academic Search Features:
+- 🎓 Google Scholar integration: academic_search("query", "google_scholar", 5)
+- 📄 arXiv paper search: academic_search("query", "arxiv", 3)
+- 🏥 PubMed medical literature: academic_search("query", "pubmed", 5)
+- 🔍 Deep content extraction from academic sources
+- 📊 Automatic paper metadata extraction
+
+Deep Search Features:
+- 🌐 Extract content from search result links
+- 📄 Crawl multiple pages for comprehensive results
+- ⚙️ Configurable result count (1-10 results)
+- 🎯 Smart link filtering and validation
+
+System: Ready for web crawling operations with unified configuration management and academic search capabilities"""
 
         return status_info
         
@@ -956,6 +1152,8 @@ def show_v9_welcome():
     print("   🔍 Smart lib directory scanning")
     print("   📋 Detailed startup diagnostics")
     print("   ⚙️ Real-time configuration updates")
+    print("   🎓 Academic search with deep content extraction (🆕 NEW)")
+    print("   🌐 Deep search for comprehensive web results (🆕 NEW)")
     print()
     print("Configuration Status:")
     print(f"   📄 Content Limit: {config.content_limits.markdown_display_limit} chars")
@@ -975,10 +1173,13 @@ def show_v9_welcome():
     print("   - Intent analysis and strategy optimization")
     print("   - Experimental Claude analysis feature")
     print("   - Unified configuration management")
+    print("   - 🎓 Academic search (Google Scholar, arXiv, PubMed)")
+    print("   - 🌐 Deep search with content extraction")
     print("=" * 50)
     print("Usage Instructions:")
-    print("   - smart_search_guide: Smart search guide")
-    print("   - crawl_with_intelligence: Smart web crawling")
+    print("   - smart_search_guide: Smart search guide with academic support")
+    print("   - crawl_with_intelligence: Smart web crawling + deep search")
+    print("   - academic_search: Specialized academic paper search")
     print("   - crawl_stealth: Stealth mode crawling")
     print("   - crawl_with_geolocation: Geolocation spoofing")
     print("   - crawl_with_retry: Retry mode crawling")
@@ -990,9 +1191,18 @@ def show_v9_welcome():
     print("   - quick_config_content_limit(5000): Set content limit")
     print("   - quick_config_word_threshold(100): Set word threshold")
     print()
+    print("Academic Search Examples:")
+    print("   - academic_search('machine learning', 'google_scholar', 5)")
+    print("   - academic_search('transformer', 'arxiv', 3)")
+    print("   - academic_search('COVID-19', 'pubmed', 5)")
+    print()
+    print("Deep Search Examples:")
+    print("   - crawl_with_intelligence('https://google.com/search?q=AI', True, True, 5)")
+    print("   - crawl_with_intelligence('https://scholar.google.com/...', True, True, 3)")
+    print()
     print("Search Function:")
-    print("   Use smart_search_guide to get search guidance")
-    print("   Use existing crawling tools for efficient search")
+    print("   Use smart_search_guide to get intelligent search guidance")
+    print("   AI will automatically recommend academic_search for research queries")
     print("=" * 50)
 
 if __name__ == "__main__":

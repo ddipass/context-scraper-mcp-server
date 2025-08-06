@@ -177,7 +177,7 @@ class V6IntentAnalyzer:
                     # 找到明确指定的搜索引擎
                     return engine, SearchEngineIntent.EXPLICIT
         
-        # 检查隐含偏好 (基于内容类型) - 按优先级顺序检查
+        # 检查隐含偏好 (基于内容类型) - 按优化后的优先级顺序检查
         
         # 1. 学术内容偏好 - 最高优先级，Google 在学术搜索方面最强
         academic_indicators = ["学术", "论文", "研究", "paper", "research", "academic", "scholar", "科研", "期刊", "文献"]
@@ -189,27 +189,35 @@ class V6IntentAnalyzer:
         if any(word in user_input.lower() for word in privacy_indicators):
             return "duckduckgo", SearchEngineIntent.IMPLICIT
         
-        # 3. 技术内容偏好 - 高优先级，Google 在技术搜索方面较强
-        tech_indicators = ["编程", "代码", "技术", "开发", "programming", "coding", "development", "api", "github"]
+        # 3. 技术内容偏好 - 高优先级，Google 在技术搜索方面更强（扩展关键词，提升优先级）
+        tech_indicators = [
+            "编程", "代码", "技术", "开发", "programming", "coding", "development", 
+            "api", "github", "教程", "tutorial", "框架", "framework", "库", "library",
+            "算法", "algorithm", "数据结构", "机器学习", "人工智能", "AI", "软件", "software",
+            "python", "java", "javascript", "react", "vue", "node", "数据库", "database"
+        ]
         if any(word in user_input.lower() for word in tech_indicators):
             return "google", SearchEngineIntent.IMPLICIT
         
-        # 4. 中文内容偏好 - 中等优先级，百度在中文搜索方面有优势
-        chinese_indicators = ["中文", "中国", "国内", "本土", "大陆", "简体", "繁体"]
-        if any(word in user_input.lower() for word in chinese_indicators):
+        # 4. 明确的中文地域偏好 - 中等优先级，更精确匹配（避免覆盖技术内容）
+        chinese_local_indicators = [
+            "中国新闻", "国内资讯", "本土品牌", "大陆政策", "中文小说", "国产", 
+            "内地", "中文论坛", "国内网站", "中国公司", "国内服务"
+        ]
+        if any(phrase in user_input.lower() for phrase in chinese_local_indicators):
             return "baidu", SearchEngineIntent.IMPLICIT
         
-        # 5. 新闻资讯偏好 - 较低优先级，根据语言选择
+        # 5. 新闻资讯偏好 - 较低优先级，根据明确的地域需求选择
         news_indicators = ["新闻", "资讯", "消息", "news", "breaking", "latest"]
         if any(word in user_input.lower() for word in news_indicators):
-            # 中文新闻用百度，英文新闻用Google
-            if any(word in user_input for word in ["中文", "中国", "国内"]):
+            # 只有明确提到中国/国内的新闻才用百度
+            if any(phrase in user_input.lower() for phrase in ["中国新闻", "国内新闻", "大陆新闻"]):
                 return "baidu", SearchEngineIntent.IMPLICIT
             else:
                 return "google", SearchEngineIntent.IMPLICIT
         
-        # 默认自动选择
-        return None, SearchEngineIntent.AUTO
+        # 默认选择 Google（全球化考虑，技术内容更全面）
+        return "google", SearchEngineIntent.AUTO
     
     def _analyze_primary_intent(self, processed_input: str) -> tuple[IntentType, float]:
         """分析主要意图"""
@@ -299,23 +307,23 @@ class V6IntentAnalyzer:
         if intent.search_engine_intent == SearchEngineIntent.IMPLICIT and intent.search_engine:
             return intent.search_engine
         
-        # 基于内容类型和语言偏好的精确推荐
+        # 基于内容类型和语言偏好的精确推荐（优化后的优先级）
         
         # 学术内容 - Google 是学术搜索的首选
         if intent.content_type == "academic":
             return "google"
         
-        # 中文内容或中国相关 - 百度更适合
-        if intent.language_preference == "chinese":
-            return "baidu"
-        
         # 隐私保护需求 - DuckDuckGo 专业
         if intent.stealth_required:
             return "duckduckgo"
         
-        # 技术内容 - Google 技术搜索更强
+        # 技术内容 - Google 技术搜索更强（提升优先级，优于语言偏好）
         if intent.content_type in ["programming", "tech", "development"]:
             return "google"
+        
+        # 明确的中文地域内容 - 百度更适合（降低优先级，更精确匹配）
+        if intent.language_preference == "chinese" and intent.content_type in ["news", "local", "culture"]:
+            return "baidu"
         
         # 新闻内容 - 根据语言偏好
         if intent.content_type == "news":
