@@ -1,0 +1,50 @@
+{
+  "content_limits": {
+    "description": "内容长度限制配置",
+    "markdown_display_limit": 3000,
+    "claude_preview_limit": 100,
+    "basic_crawl_unlimited": true
+  },
+  "quality_control": {
+    "description": "爬取质量控制配置",
+    "word_count_threshold": 50,
+    "min_content_quality": "medium"
+  },
+  "timing_control": {
+    "description": "时间控制配置",
+    "page_timeout_ms": 30000,
+    "stealth_delay_seconds": 1,
+    "dynamic_content_delay_seconds": 2,
+    "default_delay_seconds": 0
+  },
+  "retry_control": {
+    "description": "重试控制配置",
+    "max_retries": 3,
+    "retry_backoff_factor": 2,
+    "retry_max_delay_seconds": 10
+  },
+  "cache_control": {
+    "description": "缓存控制配置",
+    "default_cache_mode": "BYPASS",
+    "enable_smart_caching": false
+  },
+  "browser_control": {
+    "description": "浏览器控制配置",
+    "default_wait_until": "domcontentloaded",
+    "headless_mode": true,
+    "browser_type": "chromium"
+  },
+  "user_preferences": {
+    "description": "用户偏好设置",
+    "show_detailed_logs": true,
+    "show_word_count": true,
+    "show_timing_info": true,
+    "compact_output": false
+  },
+  "advanced_settings": {
+    "description": "高级设置",
+    "enable_content_optimization": true,
+    "enable_smart_analysis": true,
+    "auto_detect_dynamic_content": true
+  }
+}

@@ -1,4 +1,4 @@
-# v6_core/config_manager.py - V6 统一配置管理器
+# v9_core/config_manager.py - V9 统一配置管理器
 import json
 import os
 from pathlib import Path
@@ -73,9 +73,9 @@ class SystemConfig:
     max_requests_per_minute: int = 100
 
 class V6ConfigManager:
-    """V6 统一配置管理器"""
+    """V9 统一配置管理器"""
     
-    def __init__(self, config_dir: str = "v6_config"):
+    def __init__(self, config_dir: str = "v9_config"):
         self.config_dir = Path(config_dir)
         self.config_dir.mkdir(exist_ok=True)
         

@@ -2,7 +2,7 @@
 
 一个基于 [Crawl4AI](https://github.com/unclecode/crawl4ai) 的下一代 Model Context Protocol (MCP) 服务器，为 Amazon Q Developer 和其他 AI 工具提供强大的网页爬取和智能研究功能。
 
-## 🚀 V6 核心特性 (最新)
+## 🚀 V9 核心特性 (最新)
 
 ### 🎯 用户意图至上
 - **严格遵循用户指定**: 当用户明确指定搜索引擎时，系统 100% 遵循，绝不替换
@@ -29,10 +29,10 @@
 
 ### 🚀 V6 智能搜索引擎 (4个核心工具)
 - `crawl_with_intelligence` - 智能网页爬取，支持搜索引擎结果页面
-- `smart_research_v6` - 基于搜索的深度研究助手
+- `smart_research_v9` - 基于搜索的深度研究助手
 - `configure_search_engines` - 搜索引擎配置管理
 - `analyze_search_intent` - 用户意图分析和解释
-- `v6_system_status` - V6 系统状态监控
+- `v9_system_status` - V6 系统状态监控
 
 ### 🔍 V5 分层研究引擎 (4个)
 - `research_anything_v5` - 主力研究工具，支持所有模式
@@ -164,7 +164,7 @@ V6 支持 Claude 3.7 API 集成，用于高级内容分析功能。
 1. **编辑 Claude 配置文件**
    ```bash
    # 编辑配置文件
-   nano v6_config/claude_config.json
+   nano v9_config/claude_config.json
    ```
 
 2. **填入你的 API Key**
@@ -206,7 +206,7 @@ V6 支持 Claude 3.7 API 集成，用于高级内容分析功能。
 
 ### 搜索引擎配置
 
-V6 支持多搜索引擎配置，详见 `v6_config/search_engines.json`：
+V6 支持多搜索引擎配置，详见 `v9_config/search_engines.json`：
 
 ```json
 {
@@ -253,7 +253,7 @@ python tools/manage_server.py restart
 "DuckDuckGo匿名搜索隐私保护"  → 严格使用DuckDuckGo
 ```
 
-### 🎯 V6 核心工具直接调用
+### 🎯 V9 核心工具直接调用
 
 #### 智能搜索引擎
 ```python
@@ -262,7 +262,7 @@ await crawl_with_intelligence("https://www.google.com/search?q=AI新闻")
 await crawl_with_intelligence("https://www.baidu.com/s?wd=Python教程")
 
 # 智能研究，通过prompt引导选择搜索引擎
-await smart_research_v6("机器学习发展", preferred_engine="google")
+await smart_research_v9("机器学习发展", preferred_engine="google")
 
 # 意图分析 - 了解V6如何理解你的需求
 await analyze_search_intent("用Google搜索最新科技新闻")
@@ -331,11 +331,11 @@ result = await crawl_with_screenshot("https://example.com")
 ```
 context-scraper-mcp-server/
 ├── server.py                 # 🚀 主服务器 (V6)
-├── v6_core/                  # 🧠 V6 核心模块
+├── v9_core/                  # 🧠 V9 核心模块
 │   ├── config_manager.py     #   ⚙️ 统一配置管理
 │   ├── intent_analyzer.py    #   🎯 无偏见意图分析
 │   └── search_manager.py     #   🔍 多搜索引擎管理
-├── v6_config/                # 📋 V6 配置文件
+├── v9_config/                # 📋 V9 配置文件
 │   ├── search_engines.json   #   🔧 搜索引擎配置
 │   ├── user_preferences.json #   👤 用户偏好设置
 │   ├── system_config.json    #   🖥️ 系统配置
@@ -358,11 +358,11 @@ context-scraper-mcp-server/
 ### 核心依赖
 ```python
 server.py (主服务器)
-├── v6_core/
+├── v9_core/
 │   ├── config_manager.py     # 配置管理 (独立模块)
 │   ├── intent_analyzer.py    # 意图分析 (独立模块)
 │   └── search_manager.py     # 搜索管理 (依赖 config_manager + intent_analyzer)
-├── v6_config/               # 配置文件 (JSON格式)
+├── v9_config/               # 配置文件 (JSON格式)
 │   ├── search_engines.json  # 搜索引擎配置
 │   ├── user_preferences.json # 用户偏好
 │   ├── system_config.json   # 系统配置

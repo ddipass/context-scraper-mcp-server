@@ -1,4 +1,4 @@
-# v6_core/intent_analyzer.py - V6 无偏见意图分析器
+# v9_core/intent_analyzer.py - V9 无偏见意图分析器
 import re
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
@@ -45,7 +45,7 @@ class UserIntent:
     processed_tokens: List[str] = None
 
 class V6IntentAnalyzer:
-    """V6 无偏见意图分析器"""
+    """V9 无偏见意图分析器"""
     
     def __init__(self):
         # 搜索引擎关键词映射 (支持多语言)
