@@ -1,7 +1,7 @@
 {
   "content_limits": {
     "description": "内容长度限制配置",
-    "markdown_display_limit": 3000,
+    "markdown_display_limit": 15000,
     "claude_preview_limit": 100,
     "basic_crawl_unlimited": true
   },

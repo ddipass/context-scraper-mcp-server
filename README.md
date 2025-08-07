@@ -1,432 +1,368 @@
 # Context Scraper MCP Server
 
-一个基于 [Crawl4AI](https://github.com/unclecode/crawl4ai) 的下一代 Model Context Protocol (MCP) 服务器，为 Amazon Q Developer 和其他 AI 工具提供强大的网页爬取和智能研究功能。
+一个基于 [Crawl4AI](https://github.com/unclecode/crawl4ai) 的 Model Context Protocol (MCP) 服务器，为 Amazon Q Developer 和其他 AI 工具提供强大的网页爬取、学术搜索和智能研究功能。
 
-## 🚀 V9 核心特性 (最新)
+## 🚀 核心特性
 
-### 🎯 用户意图至上
-- **严格遵循用户指定**: 当用户明确指定搜索引擎时，系统 100% 遵循，绝不替换
-- **消除系统偏见**: 不再有固化的搜索引擎偏好，用户选择至上
-- **智能但不固执**: 提供建议但不强制执行
-
-### 🔍 多搜索引擎生态
-- **5大搜索引擎支持**: Google、百度、Bing、Yahoo、DuckDuckGo
-- **智能引擎选择**: 基于内容类型和语言偏好自动推荐
-- **智能回退机制**: 主引擎失败时自动切换备用引擎
-- **实时健康检查**: 监控所有搜索引擎可用性
-
-### 🧠 无偏见意图分析
-- **精确意图识别**: 区分明确指定、隐含偏好、自动选择
-- **多语言支持**: 中英文关键词智能识别
-- **特殊需求检测**: 隐身模式、动态内容、批量处理
-
-### ⚙️ 统一配置管理
-- **分层配置系统**: 系统配置、用户偏好、搜索引擎配置
-- **运行时热更新**: 无需重启即可修改配置
-- **用户偏好持久化**: 自动保存和恢复用户设置
-
-## 🛠️ 完整工具矩阵 (35+ 工具)
-
-### 🚀 V6 智能搜索引擎 (4个核心工具)
-- `crawl_with_intelligence` - 智能网页爬取，支持搜索引擎结果页面
-- `smart_research_v9` - 基于搜索的深度研究助手
-- `configure_search_engines` - 搜索引擎配置管理
-- `analyze_search_intent` - 用户意图分析和解释
-- `v9_system_status` - V6 系统状态监控
-
-### 🔍 V5 分层研究引擎 (4个)
-- `research_anything_v5` - 主力研究工具，支持所有模式
-- `research_quick_v5` - 3-8秒快速研究
-- `research_deep_v5` - 30-60秒深度分析
-- `research_competitive_v5` - 专业竞争分析
-
-### 🧠 基础爬取工具 (8个)
-- `crawl` - 基础网页爬取，返回 Markdown 格式
-- `crawl_clean` - 智能清理，自动过滤噪音内容
-- `crawl_dynamic` - 动态内容处理，支持 JavaScript 渲染
-- `crawl_with_selector` - CSS 选择器精确提取
-- `crawl_multiple` - 批量爬取多个 URL
-- `crawl_smart_batch` - 智能批量处理，内容类型优化
-- `crawl_with_screenshot` - 网页截图 + 内容提取
-- `health_check` - 网站可访问性检查
-
-### 🎯 增强功能工具 (18个)
-包括隐身爬取、地理位置伪装、重试机制、并发优化等专业功能
+- **智能网页爬取**: 支持基础、隐身、地理位置伪装等多种爬取模式
+- **学术搜索引擎**: 集成 Google Scholar、arXiv、PubMed 等学术数据库
+- **智能配置管理**: 灵活的配置系统，支持运行时调整
+- **实验性AI分析**: 可选的Claude API集成用于高级内容分析
 
 ## 📦 安装
 
 ### 前置要求
 - Python 3.12+
-- uv (推荐，现代 Python 包管理器)
+- uv (推荐) 或 pip
 
-### 方法一：从 GitHub 克隆（推荐）
+### 方法一：使用 uv (推荐)
 
 ```bash
-# 克隆项目
+# 1. 克隆项目
 git clone https://github.com/ddipass/context-scraper-mcp-server.git
 cd context-scraper-mcp-server
 
-# 使用 uv 安装依赖
+# 2. 使用 uv 同步依赖
 uv sync
 
-# 激活虚拟环境
+# 3. 激活虚拟环境
 source .venv/bin/activate
 
-# 运行 Crawl4AI 后安装设置
+# 4. 运行 Crawl4AI 设置
 crawl4ai-setup
 ```
 
 ### 方法二：使用传统 pip
 
 ```bash
-# 克隆项目
+# 1. 克隆项目
 git clone https://github.com/ddipass/context-scraper-mcp-server.git
 cd context-scraper-mcp-server
 
-# 安装依赖
+# 2. 创建虚拟环境
+python -m venv .venv
+source .venv/bin/activate  # Linux/macOS
+# 或 .venv\Scripts\activate  # Windows
+
+# 3. 安装项目依赖
 pip install -e .
 
-# 安装浏览器依赖
+# 4. 安装浏览器依赖
 python -m playwright install chromium
 
-# 运行 Crawl4AI 设置
+# 5. 运行 Crawl4AI 设置
 crawl4ai-setup
 ```
 
 ### 关于 uv
 
-我们推荐使用 [uv](https://github.com/astral-sh/uv) - 这是一个用 Rust 构建的现代 Python 包管理器，它：
-- 比传统的 pip 快得多
-- 是 Python MCP SDK 推荐的标准工具
-- 提供更好的依赖管理和虚拟环境处理
+我们推荐使用 [uv](https://github.com/astral-sh/uv) - 这是一个用 Rust 构建的现代 Python 包管理器：
 
-## 🛠️ 使用方法
+- ⚡ **速度快**: 比传统 pip 快 10-100 倍
+- 🛡️ **可靠性**: 更好的依赖解析和冲突检测
+- 🎯 **MCP 官方推荐**: Python MCP SDK 推荐的标准工具
 
-### 启动服务器
-
+安装 uv:
 ```bash
-# 使用 uv (推荐)
-uv run --with mcp mcp run server.py
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 
 # 或使用 pip
-python -m mcp run server.py
+pip install uv
 ```
 
-### 在 Amazon Q Developer 中配置
+## 🔧 MCP 配置
 
-将以下配置添加到你的 MCP 客户端配置中：
+### Amazon Q Developer 配置
 
-#### 方法一：创建 MCP 配置文件
-
-在 `.amazonq` 目录中创建 `mcp.json` 文件：
-
-```json
-{
-    "mcpServers": {
-        "ContextScraper": {
-            "command": "uv",
-            "args": ["run", "--with", "mcp", "mcp", "run", "server.py"],
-            "cwd": "/path/to/context-scraper-mcp-server"
-        }
-    }
-}
-```
-
-#### 方法二：直接配置（如果使用其他 MCP 客户端）
+在 `~/.aws/amazonq/mcp.json` 文件中添加以下配置：
 
 ```json
 {
   "mcpServers": {
-    "context-scraper": {
-      "command": "uv",
-      "args": ["run", "--with", "mcp", "mcp", "run", "server.py"],
-      "cwd": "/path/to/context-scraper-mcp-server"
+    "ContextScraper": {
+      "command": "/absolute/path/to/context-scraper-mcp-server/.venv/bin/mcp",
+      "args": [
+        "run",
+        "/absolute/path/to/context-scraper-mcp-server/server_v9.py"
+      ],
+      "cwd": "/absolute/path/to/context-scraper-mcp-server"
     }
   }
 }
 ```
 
-### 验证安装
+**重要**: 请将 `/absolute/path/to/context-scraper-mcp-server` 替换为你的实际项目路径。
 
-启动服务器后，你应该能看到类似以下的输出：
-```
-MCP Server running on stdio
-```
-
-## ⚙️ 配置说明
-
-### Claude API 配置 (可选)
-
-V6 支持 Claude 3.7 API 集成，用于高级内容分析功能。
-
-#### 配置步骤
-
-1. **编辑 Claude 配置文件**
-   ```bash
-   # 编辑配置文件
-   nano v9_config/claude_config.json
-   ```
-
-2. **填入你的 API Key**
-   ```json
-   {
-     "claude_api": {
-       "api_key": "你的Claude API Key",
-       "base_url": "http://Bedroc-Proxy-dZmq8lX6J5TY-92025060.us-west-2.elb.amazonaws.com/api/v1",
-       "model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0",
-       "enabled": true,
-       "timeout": 30,
-       "max_tokens": 4000,
-       "temperature": 0.7
-     }
-   }
-   ```
-
-3. **重启服务器使配置生效**
-   ```bash
-   python tools/manage_server.py restart
-   ```
-
-#### 配置参数说明
-
-| 参数 | 说明 | 默认值 |
-|------|------|--------|
-| `api_key` | Claude API 密钥 | `""` (必填) |
-| `base_url` | API 基础URL | Bedrock代理地址 |
-| `model` | 使用的模型 | `claude-3-7-sonnet` |
-| `enabled` | 是否启用Claude功能 | `false` |
-| `timeout` | 请求超时时间(秒) | `30` |
-| `max_tokens` | 最大token数 | `4000` |
-| `temperature` | 生成温度 | `0.7` |
-
-#### 安全提醒
-- 🔒 请妥善保管 API Key，不要提交到版本控制系统
-- 🚫 不要在公共场所或文档中暴露 API Key
-- 🔄 建议定期更换 API Key
-
-### 搜索引擎配置
-
-V6 支持多搜索引擎配置，详见 `v9_config/search_engines.json`：
-
-```json
-{
-  "google": {
-    "name": "Google",
-    "enabled": true,
-    "priority": 1
-  },
-  "baidu": {
-    "name": "百度", 
-    "enabled": true,
-    "priority": 2
-  }
-}
-```
-
-## 🎮 服务器管理
-
-项目提供了便捷的服务器管理工具：
+### 获取项目绝对路径
 
 ```bash
-# 查看服务器状态
-python tools/manage_server.py status
-
-# 停止服务器
-python tools/manage_server.py stop
-
-# 启动服务器
-python tools/manage_server.py start
-
-# 重启服务器
-python tools/manage_server.py restart
+cd context-scraper-mcp-server
+pwd
+# 将输出的路径复制到配置文件中
 ```
+
+### 验证配置
+
+启动 Amazon Q Developer 后，你应该能看到 ContextScraper 工具可用。可以使用以下命令测试：
+
+```
+使用 system_status 工具检查服务器状态
+```
+
+## 🛠️ 主要工具
+
+### 🎓 学术搜索工具
+- `academic_search` - 多数据源学术搜索 (Google Scholar, arXiv, PubMed)
+
+### 🕷️ 网页爬取工具
+- `crawl` - 基础网页爬取
+- `crawl_stealth` - 隐身模式爬取
+- `crawl_with_geolocation` - 地理位置伪装爬取
+- `crawl_with_retry` - 重试机制爬取
+- `crawl_with_intelligence` - 智能爬取模式
+
+### ⚙️ 配置管理工具
+- `configure_crawl_settings` - 爬取参数配置
+- `quick_config_content_limit` - 快速设置内容显示限制
+- `quick_config_word_threshold` - 快速设置词数阈值
+- `system_status` - 系统状态监控
+
+### 🔬 实验性工具
+- `experimental_claude_analysis` - Claude AI 内容分析 (需要API配置)
 
 ## 💡 使用示例
 
-### 🚀 V6 智能搜索（推荐）
-严格遵循用户指定的搜索引擎，消除系统偏见：
-
-```
-"用Google搜索最新的AI新闻"     → 严格使用Google
-"百度搜索Python教程"          → 严格使用百度  
-"用必应查找学术论文"          → 严格使用Bing
-"DuckDuckGo匿名搜索隐私保护"  → 严格使用DuckDuckGo
-```
-
-### 🎯 V9 核心工具直接调用
-
-#### 智能搜索引擎
+### 学术搜索
 ```python
-# 使用crawl_with_intelligence进行搜索
-await crawl_with_intelligence("https://www.google.com/search?q=AI新闻")
-await crawl_with_intelligence("https://www.baidu.com/s?wd=Python教程")
+# 在 arXiv 搜索机器学习论文
+result = await academic_search("machine learning transformers", "arxiv")
 
-# 智能研究，通过prompt引导选择搜索引擎
-await smart_research_v9("机器学习发展", preferred_engine="google")
+# 在 PubMed 搜索医学文献
+result = await academic_search("COVID-19 vaccine effectiveness", "pubmed")
 
-# 意图分析 - 了解V6如何理解你的需求
-await analyze_search_intent("用Google搜索最新科技新闻")
+# 在 Google Scholar 搜索
+result = await academic_search("climate change", "google_scholar")
 ```
 
-#### 配置管理
+### 网页爬取
 ```python
-# 查看所有搜索引擎状态
-await configure_search_engines("list")
-
-# 设置默认搜索引擎
-await configure_search_engines("set_default", engine="baidu")
-
-# 健康检查
-await configure_search_engines("health_check")
-```
-
-### 🔍 V5 分层研究引擎
-
-#### 智能研究引擎
-```python
-# 自动模式 - AI 选择最佳策略
-result = await research_anything_v5("分析特斯拉自动驾驶技术", "https://tesla.com")
-
-# 快速模式 - 3-8秒获取核心信息
-result = await research_quick_v5("了解公司基本情况", "https://company.com")
-
-# 深度模式 - 30-60秒全面分析
-result = await research_deep_v5("市场竞争分析", "https://competitor1.com,https://competitor2.com")
-
-# 竞争分析 - 专业对比研究
-result = await research_competitive_v5("产品功能对比", "https://product1.com,https://product2.com")
-```
-
-### 🛠️ 基础爬取工具
-
-#### 基础爬取
-```python
-# 基础网页爬取
+# 基础爬取
 result = await crawl("https://example.com")
 
-# CSS 选择器提取
-result = await crawl_with_selector("https://example.com", "article, .content")
+# 隐身模式爬取
+result = await crawl_stealth("https://protected-site.com")
 
-# 批量处理
-result = await crawl_multiple("https://site1.com,https://site2.com,https://site3.com")
+# 智能爬取
+result = await crawl_with_intelligence("https://news-site.com", "smart")
+
+# 地理位置伪装爬取
+result = await crawl_with_geolocation("https://geo-restricted.com", "newyork")
+
+# 重试机制爬取
+result = await crawl_with_retry("https://unstable-site.com", max_retries=3)
 ```
 
-#### 增强功能
+### 配置管理
 ```python
-# 智能内容过滤
-result = await crawl_clean("https://news-site.com/article")
+# 快速设置内容显示限制
+result = await quick_config_content_limit(5000)
 
-# 动态内容处理
-result = await crawl_dynamic("https://spa-app.com", wait_time=5)
+# 快速设置词数阈值
+result = await quick_config_word_threshold(100)
 
-# 智能批量处理
-result = await crawl_smart_batch("https://shop1.com,https://shop2.com", content_type="product")
+# 查看系统状态
+result = await system_status()
 
-# 截图功能
-result = await crawl_with_screenshot("https://example.com")
+# 配置爬取参数
+result = await configure_crawl_settings("update", "content_limits", markdown_display_limit=8000)
+```
+
+### 实验性功能
+```python
+# Claude AI 内容分析 (需要配置API)
+result = await experimental_claude_analysis("分析这段文本的主要观点", "general", enable_claude=True)
 ```
 
 ## 📁 项目结构
 
 ```
 context-scraper-mcp-server/
-├── server.py                 # 🚀 主服务器 (V6)
+├── server_v9.py              # 🚀 主服务器文件 (当前版本)
+├── server_v8.py              # V8 版本服务器
+├── server_v7.py              # V7 版本服务器
 ├── v9_core/                  # 🧠 V9 核心模块
-│   ├── config_manager.py     #   ⚙️ 统一配置管理
-│   ├── intent_analyzer.py    #   🎯 无偏见意图分析
-│   └── search_manager.py     #   🔍 多搜索引擎管理
+│   ├── intent_analyzer.py    #   🎯 用户意图分析引擎
+│   ├── crawl_config_manager.py #   ⚙️ 爬取配置管理器
+│   └── config_manager.py     #   📋 通用配置管理器
 ├── v9_config/                # 📋 V9 配置文件
-│   ├── search_engines.json   #   🔧 搜索引擎配置
-│   ├── user_preferences.json #   👤 用户偏好设置
-│   ├── system_config.json    #   🖥️ 系统配置
-│   └── claude_config.json    #   🤖 Claude API配置
+│   └── crawl_config.json     #   🔧 爬取参数配置
+├── config/                   # 🗂️ 通用配置目录
+│   ├── claude_config_example.json # Claude API 配置示例
+│   └── v6_config/            #   历史版本配置
 ├── docs/                     # 📚 文档目录
 │   ├── architecture/         #   🏗️ 架构文档
 │   ├── development/          #   🔧 开发文档
 │   └── versions/             #   📋 版本文档
-├── tools/                    # 🛠️ 管理工具
-│   └── manage_server.py      #   🎮 服务器管理
-├── legacy/                   # 📦 历史版本
-│   ├── servers/              #   🗂️ 历史服务器文件
-│   ├── tests/                #   🧪 历史测试文件
-│   └── configs/              #   ⚙️ 历史配置文件
-└── README.md                 # 📖 项目说明
+├── legacy/                   # 📦 历史版本和备份
+├── .venv/                    # 🐍 Python 虚拟环境
+├── pyproject.toml            # 📋 项目配置文件
+├── uv.lock                   # 🔒 依赖锁定文件
+└── README.md                 # 📖 项目说明文档
 ```
 
-## 🔗 V6 依赖关系
+## 🔗 Server V9 依赖关系
 
-### 核心依赖
-```python
-server.py (主服务器)
+### 核心依赖结构
+```
+server_v9.py (主服务器)
 ├── v9_core/
-│   ├── config_manager.py     # 配置管理 (独立模块)
-│   ├── intent_analyzer.py    # 意图分析 (独立模块)
-│   └── search_manager.py     # 搜索管理 (依赖 config_manager + intent_analyzer)
-├── v9_config/               # 配置文件 (JSON格式)
-│   ├── search_engines.json  # 搜索引擎配置
-│   ├── user_preferences.json # 用户偏好
-│   ├── system_config.json   # 系统配置
-│   └── claude_config.json   # Claude API配置
+│   ├── intent_analyzer.py    # 用户意图分析 (独立模块)
+│   └── crawl_config_manager.py # 爬取配置管理 (独立模块)
+├── v9_config/
+│   └── crawl_config.json     # 配置文件 (JSON格式)
 └── 外部依赖
     ├── crawl4ai             # 网页爬取引擎
     ├── mcp                  # Model Context Protocol
-    ├── aiohttp              # 异步HTTP客户端
-    └── beautifulsoup4       # HTML解析
+    └── aiohttp              # 异步HTTP客户端
 ```
 
-### 模块关系
-- **`server.py`** → 主入口，集成所有V6功能
-- **`config_manager.py`** → 被所有模块使用的配置中心
-- **`intent_analyzer.py`** → 独立的意图分析引擎
-- **`search_manager.py`** → 依赖配置管理器和意图分析器
-- **配置文件** → 所有模块的数据源
+### 模块职责
+- **`server_v9.py`** - 主服务器，集成所有V9功能，提供MCP工具接口
+- **`intent_analyzer.py`** - 分析用户意图，支持搜索、爬取、研究等多种意图类型
+- **`crawl_config_manager.py`** - 管理爬取配置，支持运行时动态调整参数
+- **`crawl_config.json`** - 存储用户偏好和系统配置
 
-### 与历史版本的区别
-- **V6**: 模块化设计，清晰的依赖关系，无循环依赖
-- **V5及以前**: 通过继承链获得功能，依赖关系复杂
+## 🚀 V9 核心功能
+
+### 🎯 智能意图分析
+- **多意图识别**: 自动识别搜索、爬取、研究、提取、监控、对比等意图类型
+  - 相关函数: `analyze_user_intent()` (v9_core/intent_analyzer.py)
+- **搜索引擎智能选择**: 支持明确指定、隐含偏好、自动选择三种模式
+  - 相关枚举: `SearchEngineIntent`, `IntentType`
+- **置信度评估**: 为每个意图分析提供置信度评分
+  - 相关类: `UserIntent` (包含confidence字段)
+
+### ⚙️ 动态配置管理
+- **运行时配置**: 无需重启即可调整爬取参数
+  - 相关函数: `configure_crawl_settings()`, `reload_crawl_config()`
+- **分层配置**: 内容限制、质量控制、时间控制、用户偏好分离管理
+  - 相关函数: `get_crawl_config()` (v9_core/crawl_config_manager.py)
+- **配置持久化**: 自动保存用户配置偏好
+  - 配置文件: `v9_config/crawl_config.json`
+- **快速配置工具**: 提供便捷的参数调整接口
+  - 相关函数: `quick_config_content_limit()`, `quick_config_word_threshold()`
+- **自动虚拟环境**: 启动时自动激活项目虚拟环境
+  - 相关函数: `activate_virtual_environment()` (server_v9.py)
+- **工作目录修正**: 自动切换到正确的工作目录
+  - 实现位置: server_v9.py 启动脚本
+
+### 🕷️ 增强爬取能力
+- **多模式爬取**: 基础、隐身、地理位置伪装、重试机制
+  - 相关函数: `crawl()`, `crawl_stealth()`, `crawl_with_geolocation()`, `crawl_with_retry()`
+- **智能内容处理**: 自动过滤噪音、提取核心内容
+  - 相关函数: `crawl_with_intelligence()`
+- **批量处理**: 支持并发爬取多个URL
+  - 相关函数: `crawl_multiple()` (如果存在)
+
+### 🎓 学术搜索集成
+- **多数据源**: Google Scholar、arXiv、PubMed等学术数据库
+  - 相关函数: `academic_search()`
+- **深度爬取**: 支持搜索结果的深度内容提取
+  - 参数: `deep_crawl_count` in `academic_search()`
+- **结果优化**: 智能去重和内容结构化
+  - 内置于学术搜索函数中
+
+### 🔧 实验性功能
+- **Claude AI 分析**: 可选的Claude API集成，用于高级内容分析
+  - 相关函数: `experimental_claude_analysis()`
+- **系统状态监控**: 实时监控服务器状态和性能
+  - 相关函数: `system_status()`
+
+## ⚙️ 高级配置
+
+### Claude API 配置 (可选)
+
+如果需要使用 Claude API 功能，可以配置 `config/claude_config_example.json`：
+
+```json
+{
+  "claude_api": {
+    "api_key": "your-api-key-here",
+    "base_url": "https://api.anthropic.com",
+    "model": "claude-3-sonnet-20240229",
+    "enabled": false,
+    "timeout": 30,
+    "max_tokens": 4000,
+    "temperature": 0.7
+  }
+}
+```
+
+### 爬取配置
+
+编辑 `v9_config/crawl_config.json` 来调整爬取参数：
+
+```json
+{
+  "content_limits": {
+    "markdown_display_limit": 3000,
+    "word_count_threshold": 50
+  },
+  "quality_control": {
+    "min_content_length": 100,
+    "enable_content_filtering": true
+  },
+  "user_preferences": {
+    "show_word_count": true,
+    "show_crawl_info": true
+  }
+}
+```
 
 ## 🎯 适用场景
 
-### 研究人员
-- 学术论文和资料收集
-- 多源信息对比分析
-- 结构化数据提取
+- **学术研究**: 文献搜索、论文分析、引用追踪
+- **市场调研**: 竞争分析、行业报告、趋势监控
+- **技术文档**: API 文档整理、技术资料收集
+- **内容创作**: 素材收集、事实核查、灵感发现
 
-### 商业分析师
-- 市场调研和趋势分析
-- 竞争对手监控
-- 产品信息收集
+## 🔧 故障排除
 
-### 开发者
-- API 数据源构建
-- 内容聚合服务
-- 自动化数据收集
+### 常见问题
 
-### 内容创作者
-- 素材收集和整理
-- 趋势监控
-- 灵感来源挖掘
+1. **找不到 mcp 命令**
+   ```bash
+   # 确保虚拟环境已激活
+   source .venv/bin/activate
+   which mcp
+   ```
 
-## 🏆 技术优势
+2. **路径配置错误**
+   ```bash
+   # 获取正确的绝对路径
+   cd context-scraper-mcp-server
+   pwd
+   ```
 
-- **完全免费**: 无需任何外部 API 密钥
-- **智能优化**: 根据内容类型自动选择最佳策略
-- **高性能**: 基于 Crawl4AI v0.6.3 最新优化
-- **易于使用**: 自然语言描述，AI 自动选择工具
-- **模块化设计**: 代码清晰，易于维护和扩展
+3. **权限问题**
+   ```bash
+   # 检查文件权限
+   ls -la ~/.aws/amazonq/mcp.json
+   chmod 644 ~/.aws/amazonq/mcp.json
+   ```
 
-## 📚 文档
+### 测试连接
 
-- [V6 依赖关系分析](./docs/architecture/V6_DEPENDENCY_ANALYSIS.md) - V6 架构和依赖关系详解
-- [V6 升级完成报告](./docs/development/V6_UPGRADE_COMPLETE.md) - V6 新功能和升级详情
-- [V6 升级规划](./docs/development/V6_UPGRADE_PLAN.md) - V6 开发规划和设计理念
-- [搜索引擎分析](./docs/architecture/SEARCH_ENGINE_ANALYSIS.md) - 搜索引擎优势分析和匹配策略
-- [搜索引擎修复总结](./docs/development/SEARCH_ENGINE_FIX_SUMMARY.md) - 搜索引擎匹配问题修复
-- [V5 使用指南](./docs/versions/V5_USAGE_GUIDE.md) - V5 新功能详细说明
-- [使用指南](./docs/USAGE_GUIDE.md) - 详细的功能使用说明
-- [服务器管理指南](./docs/SERVER_MANAGEMENT_GUIDE.md) - 服务器管理和故障排除
-- [版本文档](./docs/versions/) - 各版本详细文档
-- [依存关系分析](./docs/architecture/DEPENDENCY_ANALYSIS.md) - 项目架构和依存关系
+```bash
+# 直接运行服务器测试
+cd context-scraper-mcp-server
+source .venv/bin/activate
+.venv/bin/mcp run server_v9.py
+```
 
 ## 🤝 贡献
 
@@ -439,7 +375,7 @@ server.py (主服务器)
 ## 🙏 致谢
 
 - [Crawl4AI](https://github.com/unclecode/crawl4ai) - 强大的网页爬取库
-- [FastMCP](https://github.com/jlowin/fastmcp) - 简化的 MCP 服务器框架
+- [Model Context Protocol](https://modelcontextprotocol.io/) - AI 工具集成标准
 
 ## 📚 相关链接
 

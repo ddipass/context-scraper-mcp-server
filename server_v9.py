@@ -6,6 +6,21 @@ import sys
 import os
 from pathlib import Path
 
+# ===== 工作目录修正 =====
+# 确保无论从哪个目录启动，都能正确找到项目资源文件
+SCRIPT_DIR = Path(__file__).parent.absolute()
+print(f"🔧 脚本目录: {SCRIPT_DIR}")
+print(f"🔧 当前工作目录: {Path.cwd()}")
+
+# 如果当前工作目录不是脚本所在目录，则切换到脚本目录
+if Path.cwd() != SCRIPT_DIR:
+    print(f"🔄 切换工作目录: {Path.cwd()} -> {SCRIPT_DIR}")
+    os.chdir(SCRIPT_DIR)
+    print(f"✅ 工作目录已切换到: {Path.cwd()}")
+else:
+    print(f"✅ 工作目录正确: {Path.cwd()}")
+# ===== 工作目录修正结束 =====
+
 # ===== 自动激活虚拟环境功能 =====
 def activate_virtual_environment():
     """
