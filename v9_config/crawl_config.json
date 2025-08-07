@@ -39,7 +39,8 @@
     "show_detailed_logs": true,
     "show_word_count": true,
     "show_timing_info": true,
-    "compact_output": false
+    "compact_output": false,
+    "separator_length": 50
   },
   "advanced_settings": {
     "description": "高级设置",

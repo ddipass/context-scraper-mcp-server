@@ -33,7 +33,6 @@ class SearchEngineConfig:
     api_key: Optional[str] = None
     base_url: Optional[str] = None
     timeout: int = 30
-    max_results: int = 10
     priority: int = 1  # 1=最高优先级
 
 @dataclass

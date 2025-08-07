@@ -58,6 +58,7 @@ class UserPreferences:
     show_word_count: bool = True
     show_timing_info: bool = True
     compact_output: bool = False
+    separator_length: int = 50
 
 @dataclass
 class AdvancedSettings:
@@ -169,7 +170,8 @@ class CrawlConfigManager:
             show_detailed_logs=config.get("show_detailed_logs", True),
             show_word_count=config.get("show_word_count", True),
             show_timing_info=config.get("show_timing_info", True),
-            compact_output=config.get("compact_output", False)
+            compact_output=config.get("compact_output", False),
+            separator_length=config.get("separator_length", 50)
         )
     
     def _create_advanced_settings(self) -> AdvancedSettings:
@@ -257,7 +259,8 @@ class CrawlConfigManager:
                     "show_detailed_logs": self.user_preferences.show_detailed_logs,
                     "show_word_count": self.user_preferences.show_word_count,
                     "show_timing_info": self.user_preferences.show_timing_info,
-                    "compact_output": self.user_preferences.compact_output
+                    "compact_output": self.user_preferences.compact_output,
+                    "separator_length": self.user_preferences.separator_length
                 },
                 "advanced_settings": {
                     "description": "高级设置",
@@ -302,6 +305,7 @@ class CrawlConfigManager:
   - 显示词数: {self.user_preferences.show_word_count}
   - 显示时间: {self.user_preferences.show_timing_info}
   - 紧凑输出: {self.user_preferences.compact_output}
+  - 分隔符长度: {self.user_preferences.separator_length}
 """
 
 # 全局配置管理器实例
